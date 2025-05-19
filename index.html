@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sal’s Strawberry Saloon</title>
   <link rel="stylesheet" href="style.css" />
-  <script type="module" src="./main.mjs"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 </head>
 <body>
   <div class="container">
@@ -23,13 +23,23 @@
 
       <label for="fruitQuantity">How many servings per week?</label>
       <input type="number" id="fruitQuantity" name="fruitQuantity" required />
-
-      <!-- add more fields here -->
     </form>
 
     <button onclick="fb_write()">Submit</button>
 
     <p id="statusMessage"></p>
   </div>
+
+  <!-- Import and initialize Firebase app -->
+  <script type="module">
+    import { fb_initialise, fb_authenticate, fb_write } from './main.mjs';
+
+    window.fb_authenticate = fb_authenticate;
+    window.fb_write = fb_write;
+
+    fb_initialise();
+  </script>
 </body>
 </html>
+
+
