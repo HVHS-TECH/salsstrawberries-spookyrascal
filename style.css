@@ -1,59 +1,88 @@
 body {
-  background-color: #ffe6eb;
-  color: #8b0000;
-  font-family: Arial, sans-serif;
+  background-color: #fff0f5; /* light pink */
+  color: #4b0082; /* deep purple */
+  font-family: 'Comic Sans MS', cursive, sans-serif;
   padding: 2rem;
+  transition: all 0.5s ease;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 666px;
   margin: auto;
-  background-color: #fff0f5;
+  background: linear-gradient(135deg, #ffe6f0, #f8d7e5); /* soft pastel fade */
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  border: 2px solid #ff4757; /* bright strawberry red */
+  box-shadow: 0 0 25px rgba(255, 71, 87, 0.5); /* glowing red */
+  transition: all 0.5s ease;
 }
 
 h1 {
-  color: pink;
-  font-size: 2.5rem;
+  color: #ff2d55; /* bold strawberry red */
+  font-size: 2.7rem;
   margin-bottom: 0;
+  text-shadow: 1px 1px #ffe6f0; /* soft pink glow */
 }
 
 h2 {
-  color: #8b0000;
-  font-size: 1.2rem;
-  margin-top: 0.2rem;
+  color: #ff6f91; /* lighter rosy red */
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 1px 1px #ffe6f0;
 }
 
 label {
   display: block;
   margin-top: 1rem;
+  color: #ff4757; /* bright red */
+  font-weight: bold;
 }
 
 input {
   width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.3rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 0.6rem;
+  margin-top: 0.4rem;
+  background-color: #fffafa; /* snow white */
+  color: #8b008b; /* dark magenta */
+  border: 1px solid #ff6f91; /* soft rosy red */
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 10px #ff2d55; /* strawberry glow */
+  background-color: #ffe4e1;
+}
+
+input::placeholder {
+  color: #ff9ca3; /* light pinkish red */
 }
 
 button {
   margin-top: 1.5rem;
-  padding: 0.7rem 1.2rem;
-  background-color: #ff5c8d;
-  color: white;
+  padding: 0.8rem 1.4rem;
+  background-color: #ff4757; /* bright red */
+  color: #fff0f5; /* pale pink text */
+  font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 0 10px #ff2d55;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: #e64a74;
+  background-color: #ff2d55; /* deeper red */
+  box-shadow: 0 0 20px #ff1a3c; /* juicy hover glow */
+  color: white;
 }
 
 #statusMessage {
   margin-top: 1rem;
   font-style: italic;
+  color: #e65050; /* rosy red */
+  text-shadow: 1px 1px #ffe6f0;
 }
+
