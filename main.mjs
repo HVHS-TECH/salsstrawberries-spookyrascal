@@ -28,6 +28,10 @@ import { fb_read }
 import { email_view }
     from './script.mjs';
     window.email_view = email_view;
+
+import { fb_leaderboard } 
+    from './script.mjs';
+    window.fb_leaderboard = fb_leaderboard;
 /**************************************************************/
 // index.html main code
 /**************************************************************/

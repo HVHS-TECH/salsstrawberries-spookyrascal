@@ -1,11 +1,14 @@
+/* === General Styles === */
 body {
   background-color: #fff0f5; /* light pink */
   color: #4b0082; /* deep purple */
   font-family: 'Comic Sans MS', cursive, sans-serif;
   padding: 2rem;
-  transition: all 0.5s ease;
+  margin: 0;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
+/* === Container === */
 .container {
   max-width: 666px;
   margin: auto;
@@ -14,9 +17,10 @@ body {
   border-radius: 16px;
   border: 2px solid #ff4757; /* bright strawberry red */
   box-shadow: 0 0 25px rgba(255, 71, 87, 0.5); /* glowing red */
-  transition: all 0.5s ease;
+  transition: background 0.5s ease, box-shadow 0.5s ease;
 }
 
+/* === Headings === */
 h1 {
   color: #ff2d55; /* bold strawberry red */
   font-size: 2.7rem;
@@ -32,6 +36,7 @@ h2 {
   text-shadow: 1px 1px #ffe6f0;
 }
 
+/* === Form Elements === */
 label {
   display: block;
   margin-top: 1rem;
@@ -47,7 +52,8 @@ input {
   color: #8b008b; /* dark magenta */
   border: 1px solid #ff6f91; /* soft rosy red */
   border-radius: 8px;
-  transition: all 0.2s ease-in-out;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
 input:focus {
@@ -60,8 +66,11 @@ input::placeholder {
   color: #ff9ca3; /* light pinkish red */
 }
 
+/* === Buttons === */
 button {
+  display: inline-block;
   margin-top: 1.5rem;
+  margin-right: 0.5rem;
   padding: 0.8rem 1.4rem;
   background-color: #ff4757; /* bright red */
   color: #fff0f5; /* pale pink text */
@@ -69,16 +78,27 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
   box-shadow: 0 0 10px #ff2d55;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
   background-color: #ff2d55; /* deeper red */
   box-shadow: 0 0 20px #ff1a3c; /* juicy hover glow */
-  color: white;
+  color: #ffffff;
+  transform: scale(1.03);
 }
 
+button:disabled {
+  background-color: #333; /* muted dark background */
+  color: #aaa; /* dull grey */
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+/* === Status Message === */
 #statusMessage {
   margin-top: 1rem;
   font-style: italic;
