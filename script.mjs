@@ -1,15 +1,7 @@
-//**************************************************************/
-// script.mjs - Firebase logic
-// Written by <Carmen O'Grady>, Term 2 2025
-//**************************************************************/
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-console.log('%c fb_io.mjs', 'color: blue; background-color: white;');
-
-// --- Firebase Config ---
 const FB_GAMECONFIG = {
   apiKey: "AIzaSyB5B5P_sSmNTN7RjkaV-I2TKNUJWj0cF1A",
   authDomain: "comp-2025-carmen-o-grady.firebaseapp.com",
@@ -23,55 +15,104 @@ const FB_GAMECONFIG = {
 
 let FB_GAMEAPP;
 let FB_GAMEDB;
+let auth;
 let currentUser = null;
 let userId = null;
 
-// Safer DOM button toggle
+// --- Toggle buttons safely ---
 function toggleButtons(state) {
   ["leaderboardBtn", "submitBtn", "emailBtn"].forEach(id => {
     const btn = document.getElementById(id);
-    if (btn) btn.disabled = !state;
+    if (btn) {
+      btn.disabled = !state;
+      if (btn.disabled) {
+        btn.classList.remove('active');
+      }
+    }
   });
 }
 
-// Initialize Firebase
+// Update login button text and click handler
+function updateLoginBtn(isLoggedIn) {
+  const loginBtn = document.getElementById('loginBtn');
+  if (!loginBtn) return;
+
+  if (isLoggedIn) {
+    loginBtn.textContent = "Logout";
+    loginBtn.onclick = fb_logout;
+  } else {
+    loginBtn.textContent = "Login with Google";
+    loginBtn.onclick = fb_authenticate;
+  }
+}
+
+// Initialize Firebase and set up auth listener
 function fb_initialise() {
   FB_GAMEAPP = initializeApp(FB_GAMECONFIG);
   FB_GAMEDB = getDatabase(FB_GAMEAPP);
-  console.info("Firebase Initialized", FB_GAMEDB);
-  toggleButtons(true); // Enable buttons after init
+  auth = getAuth(FB_GAMEAPP);
+
+  toggleButtons(false);
+  updateLoginBtn(false);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      userId = user.uid;
+      console.log("User logged in:", user.email);
+      toggleButtons(true);
+      updateLoginBtn(true);
+    } else {
+      currentUser = null;
+      userId = null;
+      console.log("User logged out");
+      toggleButtons(false);
+      updateLoginBtn(false);
+
+      // Clear UI on logout
+      document.getElementById("emailOutput").innerHTML = "";
+      document.getElementById("leaderboard").innerHTML = "";
+    }
+  });
 }
-export { fb_initialise };
 
-// Authenticate with Google
+// Authenticate user with Google popup
 function fb_authenticate() {
-  const AUTH = getAuth();
-  const PROVIDER = new GoogleAuthProvider();
-  PROVIDER.setCustomParameters({ prompt: 'select_account' });
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
 
-  return signInWithPopup(AUTH, PROVIDER)
-    .then((result) => {
-      currentUser = result.user;
-      userId = currentUser.uid;
-      console.log("Accepted Log In:", currentUser.email, "UID:", userId);
-      return currentUser;
+  return signInWithPopup(auth, provider)
+    .then(result => {
+      console.log("Accepted Log In:", result.user.email);
+      return result.user;
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("Denied Log In", error);
+      alert("Login failed: " + error.message);
       throw error;
     });
 }
-export { fb_authenticate };
 
-// Write form data to database
+// Logout current user
+function fb_logout() {
+  signOut(auth)
+    .then(() => {
+      console.log("User signed out");
+    })
+    .catch(error => {
+      console.error("Sign out error:", error);
+    });
+}
+
+// Write form data to Firebase Database
 function fb_write() {
   if (!currentUser) {
     alert("You must be logged in to submit the form.");
     return;
   }
 
-  const name = document.getElementById("name").value;
-  const favoriteFruit = document.getElementById("favoriteFruit").value;
+  const name = document.getElementById("name").value.trim();
+  const favoriteFruit = document.getElementById("favoriteFruit").value.trim();
   const fruitQuantity = parseInt(document.getElementById("fruitQuantity").value);
 
   if (!name || !favoriteFruit || isNaN(fruitQuantity)) {
@@ -94,7 +135,6 @@ function fb_write() {
     alert("Error saving data. Check console.");
   });
 }
-export { fb_write };
 
 // Read current user's data
 function fb_read() {
@@ -111,9 +151,8 @@ function fb_read() {
       throw error;
     });
 }
-export { fb_read };
 
-// Generate dramatic culty email
+// Show custom styled "email" info from user data
 function email_view() {
   if (!currentUser) {
     alert("You must be logged in to view email.");
@@ -145,9 +184,8 @@ function email_view() {
       console.error("Error reading data for email:", error);
     });
 }
-export { email_view };
 
-// Leaderboard Logic
+// Show leaderboard of top 5 fruits
 function fb_leaderboard() {
   const dbRef = ref(FB_GAMEDB, 'users/');
   get(dbRef)
@@ -155,25 +193,46 @@ function fb_leaderboard() {
       const data = snapshot.val();
       if (!data) {
         console.log("No user data to rank.");
+        document.getElementById("leaderboard").innerHTML = "<p>No data available.</p>";
         return;
       }
 
       const fruitCounts = {};
+      const fruitNamesOriginalCase = {};
+
+      // Aggregate fruit quantities case-insensitively
       Object.values(data).forEach(user => {
+        if (!user) return;  // skip null or undefined
+
         const fruit = user.FavoriteFruit;
         const quantity = parseInt(user.FruitQuantity);
-        if (fruit && !isNaN(quantity)) {
-          fruitCounts[fruit] = (fruitCounts[fruit] || 0) + quantity;
+
+        if (typeof fruit === 'string' && !isNaN(quantity)) {
+          const fruitKey = fruit.toLowerCase();
+
+          fruitCounts[fruitKey] = (fruitCounts[fruitKey] || 0) + quantity;
+
+          // Save original case once
+          if (!fruitNamesOriginalCase[fruitKey]) {
+            fruitNamesOriginalCase[fruitKey] = fruit;
+          }
         }
       });
 
+      // If no valid fruits found
+      if (Object.keys(fruitCounts).length === 0) {
+        document.getElementById("leaderboard").innerHTML = "<p>No valid fruit data to display.</p>";
+        return;
+      }
+
+      // Sort descending by quantity and take top 5
       const sortedFruits = Object.entries(fruitCounts)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5);
 
       const leaderboardHTML = sortedFruits.map(
-        ([fruit, qty], i) =>
-          `<li><strong>#${i + 1}:</strong> ${fruit} — ${qty} total</li>`
+        ([fruitKey, qty], i) =>
+          `<li><strong>#${i + 1}:</strong> ${fruitNamesOriginalCase[fruitKey]} — ${qty} total</li>`
       ).join("");
 
       document.getElementById("leaderboard").innerHTML = `
@@ -184,6 +243,14 @@ function fb_leaderboard() {
     })
     .catch((error) => {
       console.error("Error generating leaderboard:", error);
+      document.getElementById("leaderboard").innerHTML = "<p>Error loading leaderboard.</p>";
     });
 }
-export { fb_leaderboard };
+
+export {
+  fb_initialise,
+  fb_authenticate,
+  fb_write,
+  email_view,
+  fb_leaderboard
+};
