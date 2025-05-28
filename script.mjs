@@ -173,7 +173,7 @@ function email_view() {
         <p>Sal’s Strawberry Saloon welcomes you to the orchard of damnation, where every bite drips with the blood of <em style="color:#d14775;">Thal’zor</em> and probably high-fructose corn syrup.</p>
         <p>Your hunger for <strong style="color:#ff699d;">${data.FavoriteFruit}</strong> has bound you with a curse: <strong style="color:#ff699d;">${data.FruitQuantity}</strong> times each moon. <em>“Ghor’zal thun’gar, vek’al thul.”</em> Translation: no refunds.</p>
         <p>Your first smoothie, a gift from <strong style="color:#f06292;">Sal’zaroth</strong>, the Abyssal Blender, carries the curse of eternal decay. Also a splash of oat milk.</p>
-        <p style="color:#c74c71; font-weight: bold;">Changed your mind? Click <a href="https://www.theuselessweb.com" target="_blank" style="color:#ff8cb3;">here</a> to opt out (or enter the void?).</p>
+        <p style="color:#c74c71; font-weight: bold;">Changed your mind? Click <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" style="color:#ff8cb3;">here</a> to opt out (or enter the void?).</p>
         <p style="margin-top: 2rem; font-style: italic; color:#a73f5e;">Forever cursed and fruit-bound,<br /> — The Cult of Sal’s Strawberry Saloon 🍓</p>
       </div>
       `;

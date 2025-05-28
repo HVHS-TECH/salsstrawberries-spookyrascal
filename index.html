@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sal’s Strawberry Saloon</title>
 
-  <script src="main.mjs" type="module"></script>
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 </head>
@@ -16,7 +16,7 @@
     <h2>(and other fruit products)</h2>
 
     <!-- Login Button -->
-    <button id="loginBtn">Login with Google</button>
+    <button id="loginBtn" onclick="fb_authenticate()">Login with Google</button>
 
     <!-- Fruit Form -->
     <form id="fruitForm">
@@ -31,9 +31,9 @@
     </form>
 
     <!-- Action Buttons -->
-    <button id="submitBtn" disabled>Submit</button>
-    <button id="emailBtn" disabled>Show Email</button>
-    <button id="leaderboardBtn" disabled>Show Top 5 Fruits</button>
+    <button id="submitBtn" onclick="fb_write()" disabled>Submit</button>
+    <button id="emailBtn" onclick="email_view()" disabled>Show Email</button>
+    <button id="leaderboardBtn" onclick="fb_leaderboard()" disabled>Show Top 5 Fruits</button>
 
     <!-- Output Areas -->
     <div id="leaderboard"></div>
@@ -51,17 +51,14 @@
       fb_leaderboard
     } from './script.mjs';
 
-    // Initialize Firebase and setup auth state listener
+    // Expose functions globally for inline HTML onclick handlers
+    window.fb_authenticate = fb_authenticate;
+    window.fb_write = fb_write;
+    window.email_view = email_view;
+    window.fb_leaderboard = fb_leaderboard;
+
+    // Initialize Firebase & enable buttons after setup
     fb_initialise();
-
-    // Setup event listeners for buttons
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      // This button's click behavior is dynamically changed in script.mjs on auth state change
-    });
-
-    document.getElementById('submitBtn').addEventListener('click', fb_write);
-    document.getElementById('emailBtn').addEventListener('click', email_view);
-    document.getElementById('leaderboardBtn').addEventListener('click', fb_leaderboard);
   </script>
 
   <!-- Live Reload Script (Dev Only) -->

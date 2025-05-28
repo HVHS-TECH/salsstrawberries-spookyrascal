@@ -1,27 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap');
+
+/* === General Styles === */
 body {
-  background-color: #fff0f5; /* light pink */
+  background-color: #ffffff; /* light pink */
   color: #4b0082; /* deep purple */
   font-family: 'Comic Sans MS', cursive, sans-serif;
   padding: 2rem;
-  transition: all 0.5s ease;
+  margin: 0;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
+/* === Container === */
 .container {
   max-width: 666px;
   margin: auto;
   background: linear-gradient(135deg, #ffe6f0, #f8d7e5); /* soft pastel fade */
   padding: 2rem;
   border-radius: 16px;
-  border: 2px solid #ff4757; /* bright strawberry red */
-  box-shadow: 0 0 25px rgba(255, 71, 87, 0.5); /* glowing red */
-  transition: all 0.5s ease;
+  border: 3px solid;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(45deg,
+    #ff597d,   /* brighter strawberry pink */
+    #ffc54c,   /* sunny gold */
+    #fff974,   /* bright buttery yellow */
+    #5de3a2,   /* fresh mint green */
+    #48caff,   /* sky blue pop */
+    #b07aff,   /* vibrant lavender */
+    #ff6ac1    /* punchy pastel pink */
+  );
+  box-shadow: 0 0 20px rgba(228, 106, 133, 0.4); /* softer glowing pink */
+  transition: background 0.5s ease, box-shadow 0.5s ease;
 }
 
+/* === Headings === */
 h1 {
-  color: #ff2d55; /* bold strawberry red */
   font-size: 2.7rem;
   margin-bottom: 0;
-  text-shadow: 1px 1px #ffe6f0; /* soft pink glow */
+  font-weight: 900;
+  background: linear-gradient(90deg,
+    #e46a85,
+    #f2bb5c,
+    #fff1a8,
+    #75c6a0,
+    #66b7cc,
+    #9a6eb9,
+    #db7aad
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.3rem;
 }
 
 h2 {
@@ -32,6 +60,7 @@ h2 {
   text-shadow: 1px 1px #ffe6f0;
 }
 
+/* === Form Elements === */
 label {
   display: block;
   margin-top: 1rem;
@@ -47,7 +76,8 @@ input {
   color: #8b008b; /* dark magenta */
   border: 1px solid #ff6f91; /* soft rosy red */
   border-radius: 8px;
-  transition: all 0.2s ease-in-out;
+  font-size: 1rem;
+  transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
 input:focus {
@@ -60,8 +90,11 @@ input::placeholder {
   color: #ff9ca3; /* light pinkish red */
 }
 
+/* === Buttons === */
 button {
+  display: inline-block;
   margin-top: 1.5rem;
+  margin-right: 0.5rem;
   padding: 0.8rem 1.4rem;
   background-color: #ff4757; /* bright red */
   color: #fff0f5; /* pale pink text */
@@ -69,31 +102,30 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
   box-shadow: 0 0 10px #ff2d55;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-button:hover:not(:disabled) {
+button:hover {
   background-color: #ff2d55; /* deeper red */
   box-shadow: 0 0 20px #ff1a3c; /* juicy hover glow */
-  color: white;
+  color: #ffffff;
+  transform: scale(1.03);
 }
 
+button:disabled {
+  background-color: #333; /* muted dark background */
+  color: #aaa; /* dull grey */
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+/* === Status Message === */
 #statusMessage {
   margin-top: 1rem;
   font-style: italic;
   color: #e65050; /* rosy red */
   text-shadow: 1px 1px #ffe6f0;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background-color: #ccc;
-}
-
-button.active {
-  background-color: #ff699d;
-  color: white;
-  box-shadow: 0 0 10px #ff699d;
 }
