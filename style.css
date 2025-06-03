@@ -115,8 +115,8 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #333; /* muted dark background */
-  color: #aaa; /* dull grey */
+  background-color: #333; 
+  color: #aaa; 
   cursor: not-allowed;
   box-shadow: none;
   opacity: 0.6;
